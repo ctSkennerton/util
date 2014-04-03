@@ -44,7 +44,7 @@
 // MAP: dynamic hash table with opaque records. Type "/@map" for details.
 //          Caller owns all keys and values.
 //
-// KVS: (key,val) string-pair map, based on MAP. 
+// KVS: (key,val) string-pair map, based on MAP.
 //          Object owns all keys and values.
 //      kvs_create()
 //      kvs_destroy(ms)
@@ -64,7 +64,7 @@
 //      cache_get(cache, key)
 //      cache_set(cache, key, val)
 //
-// THREAD: pthread wrapper. 
+// THREAD: pthread wrapper.
 //      thread_start(func, arg)         Create and start a thread.
 //      thread_cancel(thread)
 //      thread_wait(thread)             Wait for a thread to exit.
@@ -135,7 +135,7 @@
 //                              If fmt ends in ":", die appends strerror(errno).
 //
 //  eainame[neainames]      - (string) names for (negative) getaddrinfo return codes.
-//  errname[nerrnames]      - (string) names for errno values. More succinct than strerror(). 
+//  errname[nerrnames]      - (string) names for errno values. More succinct than strerror().
 //  findbit_0(vec,nbytes)   - find position of first '0' bit in a bit vector.
 //  findbit_1(vec,nbytes)   - find position of first '1' bit in bit vector.
 //  fnv{04,08,16}           - reasonable, fast Fowler-Noll-Voh scalar hashes.
@@ -150,7 +150,7 @@
 //	                        Ensures that code[len-1] is a string of zero bits.
 //  maccess(buf,len,mode)   - Test whether buf[0..len-1] is readable/writable memory.
 //                              mode is 0 for readable, 1 for readwrite.
-//  maccess_init()          - Optional initialization routine, called explicitly 
+//  maccess_init()          - Optional initialization routine, called explicitly
 //                              when maccess is used in a threaded environment.
 //  memfind(A,m,B,n)        - "strstr" for (ptr,len) pairs
 //  mmhash3_x{86,64}_{04,08,16} - MurmurHash3 for 32 and 64-bit cpus.
@@ -191,7 +191,7 @@ extern "C" {
 #endif
 
 // Convenient format strings constants e.g. printf("%"FSIZE"X", sizeof thing);
-//  F64:int64_t  FPTR:intptr_t  FSIZE:size_t 
+//  F64:int64_t  FPTR:intptr_t  FSIZE:size_t
 //  The strings do NOT include the "%", so that the user can specify
 //  width/justification/signedness/radix etc.
 //XXX see how inttypes.h tries to do this.
@@ -200,10 +200,10 @@ extern "C" {
 #   define FPTR     "l"
 #elif __SIZEOF_POINTER__ == __SIZEOF_INT__
 #   define FPTR
-#elif __SIZEOF_POINTER__ == __SIZEOF_LONG__ 
+#elif __SIZEOF_POINTER__ == __SIZEOF_LONG__
 #   define FPTR     "l"
 #else
-#   error need to define FPTR 
+#   error need to define FPTR
 #endif
 
 // uintptr_t is not unsigned int on stinky
@@ -215,7 +215,7 @@ extern "C" {
 #elif __SIZEOF_SIZE_T__ == __SIZEOF_LONG__
 #   define FSIZE    "l"
 #else
-#   error need to define FSIZE 
+#   error need to define FSIZE
 #endif
 
 #if __LONG_MAX__ == 9223372036854775807L
@@ -255,7 +255,7 @@ static inline unsigned long long bswap_64(unsigned long long x) { return (((unsi
 //#   error Find out how to define bswap and endian.h for this platform!
 #endif
 
-// This is the gcc way 
+// This is the gcc way
 #define UNALIGNED __attribute__((align(1))
 #define NORETURN  __attribute__((noreturn))
 
@@ -295,7 +295,7 @@ static inline TYPE*FIELD##_##TYPE(__typeof(((TYPE*)0)->FIELD) *lp) \
 { return (TYPE*)((uint8_t*)lp - (uint8_t*)&((TYPE*)0)->FIELD); }
 #endif
 //--------------|-------|-------|-------------------------------
-// MEMBUF's created from C strings allocate the trailing \0 
+// MEMBUF's created from C strings allocate the trailing \0
 //  but do not count it in .len. Maybe that's wrong.
 
 typedef struct { char *ptr; size_t len; }	MEMBUF;
@@ -506,7 +506,7 @@ static inline void kvs_resize(KVS sh, int n)
 { map_resize(sh, n); }
 
 //--------------|-----------------------------------------------
-//@cache: 
+//@cache:
 typedef char const*  CACHEKEY;
 typedef uint32_t     CACHEVAL;
 typedef struct cache CACHE;
@@ -603,7 +603,7 @@ static inline MEMREF STRREF(STR s)
 // rollhash_arg returns (256 ^ (leng - 1) mod ROLLHASH_MOD).
 //  Most efficient to compute this once then pass it to rollhash_step.
 //  Calling   rollhash_step(1, hash, data[i]*arg, data[i+leng])
-//  amounts to the same thing. 
+//  amounts to the same thing.
 
 static inline uint32_t rollhash_arg(uint32_t leng)
 {
@@ -624,10 +624,10 @@ static inline uint32_t rollhash_step(uint32_t arg, uint32_t hash, uint8_t old, u
     return ((hash + 256*ROLLHASH_MOD - old * arg) % ROLLHASH_MOD * 256 + new) % ROLLHASH_MOD;
 }
 //--------------|-----------------------------------------------
-static inline int bsrl(int x) 
+static inline int bsrl(int x)
 { asm("bsrl %0,%0":"=r"(x):"r"(x)); return x; }
 
-static inline int bsrq(long long x) 
+static inline int bsrq(long long x)
 { asm("bsrq %0,%0":"=r"(x):"r"(x)); return x; }
 
 // CPUID(eax=0): (ebx,edx,ecx) = ("Genu","ineI","ntel").
@@ -674,7 +674,7 @@ int     findbit_0(uint8_t const*vec, int nbytes);
 int     findbit_1(uint8_t const*vec, int nbytes);
 #ifndef __BSD_VISIBLE
 //XXX
-static inline int fls(int x) { if (!x) return 0; asm("bsrl %0,%0":"=a"(x):"a"(x)); return x+1; }
+//static inline int fls(int x) { if (!x) return 0; asm("bsrl %0,%0":"=a"(x):"a"(x)); return x+1; }
 #endif
 FILE*   fopenf(char const *mode, char const *fmt, ...);
 #if defined(__linux__)
