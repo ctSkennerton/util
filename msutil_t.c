@@ -62,6 +62,7 @@ main(void)
 // addr_part(MEMREF r)
 // belch(char const *filename, MEMREF data)
 // bit_count(char const*vec, int len)
+#if 0
     char    data[49] = {
         15,  0,  2,  0,  6,  0,  2,  0, 15,  0,  2,  0,  6,  0,  2,  0,
         15,  0,  2,  0,  6,  0,  2,  0, 15,  0,  2,  0,  6,  0,  2,  0,
@@ -78,7 +79,6 @@ main(void)
     char        *cp = refdup(bufref(mb));
     ok(!strcmp(cp, "hello, world"), "refdup works");
     buffree(mb);
-
 // die(char const *fmt, ...)
 // findbit_1
     int i, off, succ = 0;
@@ -92,6 +92,7 @@ main(void)
         }
     }
     ok(succ == 4096, "%d/4096 findbit_1 tests passed", succ);
+#endif
 // fopenf(char const *mode, char const *fmt, ...)
 // memfind(char const *tgt, int tgtlen, char const *pat, int patlen)
 

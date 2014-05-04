@@ -39,7 +39,7 @@ char *acstr(char const *buf, int len)
 
     for (i = 0; i < len; ++i)
         wid += esc[(unsigned char)buf[i]] ? 2 : isgraph(buf[i]) ? 1 : 4;
-    char        *ret = malloc(wid + 1), *cp = ret, ec;
+    char        *ret = (char *) malloc(wid + 1), *cp = ret, ec;
     *cp++ = '"';
     for (i = 0; i < len; i++) {
         if ((ec = esc[(unsigned char)buf[i]]))

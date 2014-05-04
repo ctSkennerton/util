@@ -53,7 +53,7 @@ static int noop(void) {return 0;}
 
 void tolog(FILE **pfp)
 {
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__APPLE__)
     *pfp = fwopen(NULL, writer);
 #elif defined(__linux__)
     *pfp = fopencookie(NULL, "w", (cookie_io_functions_t) {(void*)noop, (void*)writer, (void*)noop, (void*)noop});

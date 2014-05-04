@@ -1,6 +1,7 @@
--include rules.mk
 
 export util ?= .
+
+-include $(util)/rules.mk
 #---------------- PRIVATE VARS:
 # util.progs: programs for non-tap (e.g. perf) tests.
 # util.tpgms: test programs requiring no args

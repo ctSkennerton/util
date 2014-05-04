@@ -41,7 +41,7 @@ XXX add test cases:
 
 
 #if !__BSD_VISIBLE
-    typedef __sighandler_t sig_t;
+//    typedef __sighandler_t sig_t;
 #endif
 // This isn't right, but better than nothing.
 #ifdef __x86_64

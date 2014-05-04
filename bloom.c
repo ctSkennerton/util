@@ -63,10 +63,10 @@ bloom_create(int hash_bits, int npoints, int point_bits)
         return NULL;
         //XXX for bitfields change calloc(npoints,1) to calloc(npoints*point_bits/8 + 1,1)
     int wid = bitwid(npoints);
-    BLOOM *bp = malloc(sizeof *bp);
+    BLOOM *bp = (BLOOM *) malloc(sizeof *bp);
     *bp = (BLOOM){ hash_bits, npoints, point_bits, wid, (1 << wid) - 1,
-                   (1 << point_bits) - 1, calloc(npoints,1), MIN_OVFL_LIMIT, 0,
-                   calloc(MIN_OVFL_LIMIT, sizeof(OVFL)) };
+                   (1 << point_bits) - 1, (uint8_t *) calloc(npoints,1), MIN_OVFL_LIMIT, 0,
+                   (OVFL *) calloc(MIN_OVFL_LIMIT, sizeof(OVFL)) };
     return bp;
 }
 
@@ -168,7 +168,7 @@ ovfl_inc(BLOOM *bp, int point)
         // Double the hash table size:
         OVFL *oldp = bp->ovfl;
         bp->ovfl_limit += bp->ovfl_limit + 1;
-        bp->ovfl = calloc(bp->ovfl_limit, sizeof(OVFL));
+        bp->ovfl = (OVFL *) calloc(bp->ovfl_limit, sizeof(OVFL));
         for (; i >= 0; --i)
             bp->ovfl[ovfl_find(bp, oldp[i].point)] = oldp[i];
         free(oldp);

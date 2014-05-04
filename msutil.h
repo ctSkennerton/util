@@ -305,7 +305,7 @@ typedef struct { char const *ptr; size_t len; } MEMREF;
 #define	NILREF		(MEMREF){NULL,0}
 
 static inline MEMBUF membuf(int size)
-{ return size ? (MEMBUF){calloc(size+1, 1), size} : NILBUF; }
+{ return size ? (MEMBUF){(char *) calloc(size+1, 1), size} : NILBUF; }
 
 static inline void buffree(MEMBUF buf)
 { free(buf.ptr); }
@@ -500,7 +500,7 @@ static inline int kvs_next(KVS sh, char **kp, char **vp)
 { return map_next(sh, (void const**)kp, (void **)vp); }
 
 static inline char const *kvs_get(KVS sh, char const *k)
-{ return map_get(sh, k); }
+{ return (const char *) map_get(sh, k); }
 
 static inline void kvs_resize(KVS sh, int n)
 { map_resize(sh, n); }
@@ -575,7 +575,7 @@ static inline STR STRnew(void)
 }
 
 static inline int   STRlen(STR str)  { return vec_count(str); }
-static inline char* STRptr(STR str)  { return vec_data(str); }
+static inline char* STRptr(STR str)  { return (char *) vec_data(str); }
 static inline void  STRfree(STR str) { vec_free(str); }
 
 static inline char* STRchr(STR str, char c)
@@ -619,9 +619,9 @@ static inline uint32_t rollhash_init(uint8_t const*data, uint32_t leng)
     return hash;
 }
 
-static inline uint32_t rollhash_step(uint32_t arg, uint32_t hash, uint8_t old, uint8_t new)
+static inline uint32_t rollhash_step(uint32_t arg, uint32_t hash, uint8_t old, uint8_t newt)
 {
-    return ((hash + 256*ROLLHASH_MOD - old * arg) % ROLLHASH_MOD * 256 + new) % ROLLHASH_MOD;
+    return ((hash + 256*ROLLHASH_MOD - old * arg) % ROLLHASH_MOD * 256 + newt) % ROLLHASH_MOD;
 }
 //--------------|-----------------------------------------------
 static inline int bsrl(int x)
@@ -663,7 +663,8 @@ void sserank16d(double keys[16], int rank[16]);
 char*   acstr(char const*buf, int len);
 MEMREF 	addr_part(MEMREF);
 int     belch(char const *filename, MEMREF mem); // 0 on failure
-int     bit_count(char const *vec, int len);
+//XXX no builtin in clang, causes failure
+//int     bit_count(char const *vec, int len);
 void    bitmat_prod(uint8_t *z, uint8_t const *a, uint8_t const *bt, int nrows, int nmids, int ncols);
 int	bitwid(unsigned u);
 char*   bndmem(char *tgt, int tgtlen, char *pat, int patlen);

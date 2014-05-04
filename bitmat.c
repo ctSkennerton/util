@@ -28,8 +28,8 @@ BITMAT*
 bitmat(int nrows, int ncols)
 {
     assert (nrows % 8 == 0 && ncols % 8 == 0);
-    BITMAT *bmp = malloc(sizeof*bmp);
-    *bmp = (BITMAT) { calloc(nrows, ncols/8), nrows, ncols };
+    BITMAT *bmp = (BITMAT *) malloc(sizeof*bmp);
+    *bmp = (BITMAT) { (uint8_t *) calloc(nrows, ncols/8), nrows, ncols };
     return bmp;
 }
 

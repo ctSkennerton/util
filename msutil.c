@@ -220,6 +220,7 @@ int memsame(void const*_src, void const*_dst, int len)
     return 0;
 }
 
+#if 0
 int
 bit_count(char const *vec, int len)
 {
@@ -263,6 +264,7 @@ bit_count(char const *vec, int len)
          + __builtin_ia32_vec_ext_v4si((__v4si)sum, 2)
          + __builtin_ia32_vec_ext_v4si((__v4si)sum, 3);
 }
+#endif
 
 #define Bytes(x) (((x) + 7) >> 3)    /* nbits -> nbytes */
 
