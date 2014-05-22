@@ -14,7 +14,7 @@
 static int pintcmp(int *work, int *a, int *b) { return -(work[*a] - work[*b]); }
 
 void
-lohuff(int len, unsigned freq[len], unsigned code[len])
+lohuff(int len, unsigned * freq, unsigned * code)
 {
     int        i, nsyms, nworks = len;
     unsigned    work[2*len], rank[len];
